@@ -23,4 +23,23 @@ const Commands_Directory = path(__dirname, 'commands');
 
 
 // Script Part (don't touch!!)
-const {REST}=require('@discordjs/rest');const {Routes}=require(`discord-api-types/v${Discord_API_Version}`);const fs=require('fs');const commandFiles=fs.readdirSync(Commands_Directory).filter(file=>file.endsWith('.js'));const commands=[];for(const file of commandFiles){const command=require(`./commands/${file}`);if(command.data){commands.push(command.data.toJSON());}};const rest=new REST({version:Discord_API_Version}).setToken(token);(async()=>{try{console.log('Registering all slashes...');if(ApplyOnSpecificGuild)await rest.put(Routes.applicationGuildCommands(clientId,ApplyOnSpecificGuild),{body:commands});else await rest.put(Routes.applicationCommands(clientId),{body:commands});console.info('All slash commands has been implemented! Ctrl+R on Discord to see new commands.');}catch(error){console.error(error);}})();
+const {REST} = require('@discordjs/rest');
+const {Routes} = require(`discord-api-types/v${Discord_API_Version}`);
+const fs = require('fs');
+const commandFiles = fs.readdirSync(Commands_Directory).filter(file=>file.endsWith('.js'));
+const commands=[];
+for (const file of commandFiles){
+  const command=require(`./commands/${file}`);
+  if(command.data){
+    commands.push(command.data.toJSON());
+  }
+};
+const rest = new REST({version:Discord_API_Version}).setToken(token);
+(async()=>{
+  try{
+    console.log('Registering all slashes...');
+    if(ApplyOnSpecificGuild) await rest.put(Routes.applicationGuildCommands(clientId, ApplyOnSpecificGuild), { body:commands });
+    else await rest.put(Routes.applicationCommands(clientId), { body:commands });
+    console.info('All slash commands has been implemented! Ctrl+R on Discord to see new commands.');
+  }catch(error){ console.error(error) }
+})();
